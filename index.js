@@ -158,32 +158,37 @@ app.put(`/updateTask/:id`,async (req,res)=>{
 })
 
 // // update data
-// app.put(`/updateTaskOld/:id`,async (req,res)=>{
-//     try {
-//         const id = req.params.id;
-//         const status = req.body;
-//         // const update : {$set : status};
-//         const filter = {_id : ObjectId(id)}
-//         const updateId = {
-//             $set: {
-//                 publish: true
-//             }
-//         }
-//         const result = await task.insertOne(status);
-
-//         res.send({
-//             success : true,
-//             data: result
-//         })
+app.put(`/updateTaskOld/:id`,async (req,res)=>{
+    try {
+        const id = req.params.id;
+        const name = req.body.name;
+        const massage = req.body.message;
+        const option = { upsert: true };
         
-//     } catch (error) {
-//         res.send({
-//             success: false,
-//             error: error.message
+        // const update : {$set : status};
+        const filter = {_id : ObjectId(id)}
+        console.log(filter);
+        const updateId = {
+            $set: {
+                name: name,
+                message:massage
+            }
+        }
+        const result = await task.updateOne(filter, updateId, option);
 
-//         })
-//     }
-// })
+        res.send({
+            success : true,
+            data: result
+        })
+        
+    } catch (error) {
+        res.send({
+            success: false,
+            error: error.message
+
+        })
+    }
+})
 
 // update data
 app.put(`/updateTaskNot/:id`,async (req,res)=>{
